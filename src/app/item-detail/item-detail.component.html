@@ -1,0 +1,27 @@
+
+<div *ngIf="item">
+  <hr>
+  <div><h2>Items</h2><span></span>{{item.id}}</div>
+  <hr>
+  <div>
+    <label for="item-name">Name: </label>
+    <input id="item-name" [(ngModel)]="item.name">
+  </div>
+  <div>
+    <label for="item-description">Description: </label>
+    <input id="item-description" [(ngModel)]="item.description">
+  </div>
+  <div>
+    <label for="item-price">Price: </label>
+    <input id="item-price" [(ngModel)]="item.price">
+  </div>
+  <div>
+    <label for="item-amountOfStock">Amount of Stock: </label>
+    <input id="item-amountOfStock" [(ngModel)]="item.amountOfStock">
+  </div>
+<!--  <button (click)="edit()">EDIT</button>-->
+  <button (click)="goBack()">BACK</button>
+
+
+</div>
+<hr>
