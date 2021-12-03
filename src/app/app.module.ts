@@ -6,9 +6,11 @@ import { AppComponent } from './app.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import { ItemsComponent } from './items/items.component';
 import {HttpClientModule} from "@angular/common/http";
-import {FormsModule} from "@angular/forms";
 import { LogoComponent } from './logo/logo.component';
 import { NameFilterPipe } from './pipes/name-filter.pipe';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { ItemDetailComponent } from './item-detail/item-detail.component';
+import {RouterModule} from "@angular/router";
 
 
 @NgModule({
@@ -18,13 +20,17 @@ import { NameFilterPipe } from './pipes/name-filter.pipe';
     ItemsComponent,
     LogoComponent,
     NameFilterPipe,
+    ItemDetailComponent,
 
   ],
   imports: [
     BrowserModule,
+    RouterModule,
     AppRoutingModule,
     HttpClientModule,
+    ReactiveFormsModule,
     FormsModule,
+
   ],
   providers: [],
   bootstrap: [AppComponent]
