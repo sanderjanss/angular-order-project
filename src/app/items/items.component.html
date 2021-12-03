@@ -12,18 +12,42 @@
 <hr>
 <div class="container-fluid">
   <div class="row">
-    <div id="gallery" class="col-md-9">
-      <div class="gallery">
-        <div class="gallery-pet fader" *ngFor="let item of items | nameFilter: searchText">
-          <div>
-            <div class="overlay-text">{{item.name}}</div>
-            <img class="profile-picture" src="assets/images/item-image.png">
-            <div>Price: € {{item.price}} {{item.stockUrgency}}</div>
+    <section>
+      <div id="gallery" class="col-md-9">
+        <div class="gallery">
+          <div class="gallery-pet fader" *ngFor="let item of items | nameFilter: searchText">
+            <div>
+              <div class="overlay-text"><a routerLink="/items/{{item.id}}">  {{item.name}}</a></div>
+              <img class="profile-picture" src="assets/images/item-image.png">
+              <div>Price: € {{item.price}} {{item.stockUrgency}}</div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-</div>
+    </section>
+    <section>
+      <div class="form-group">
+        <h3>Add your item</h3>
+        <form (ngSubmit)="onSubmit()" [formGroup]="itemForm">
+          <label>Name</label>
+          <input class="form-control" [formControlName]="'name'" placeholder="Name" type="text" name="name">
+          <span class="help-block" *ngIf="!itemForm.get('name').valid && itemForm.get('name').touched">Please enter a valid name</span>
+          <label>Description</label>
+          <textarea (input)="descriptionCounter($event)" cols="50" rows="10" class="form-control" [formControlName]="'description'" placeholder="Description"></textarea>
+          <span [ngClass]="status ? 'success':'danger'">{{counter}}/255</span>
+          <span class="help-block" *ngIf="!itemForm.get('description').valid && itemForm.get('description').touched">Please enter a valid description of maximum 255 characters</span>
+          <label>Price</label>
+          <input class="form-control" [formControlName]="'price'" placeholder="Price" type="number">
+          <span class="help-block" *ngIf="!itemForm.get('price').valid && itemForm.get('price').touched">Please enter a valid price, no negative numbers</span>
+          <label>Amount of stock</label>
+          <input class="form-control" [formControlName]="'amountOfStock'" placeholder="Amount of stock" type="number">
+          <span class="help-block" *ngIf="!itemForm.get('amountOfStock').valid && itemForm.get('amountOfStock').touched">Please enter a valid name, no negative numbers</span>
+          <button class="btn btn-primary pull-right" [disabled]="itemForm.invalid" type="submit">Create Item</button>
+
+        </form>
+      </div>
+    </section>
+  </div>
 </div>
 <hr>
 

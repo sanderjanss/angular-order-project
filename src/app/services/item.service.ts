@@ -24,9 +24,16 @@ export class ItemService {
       catchError(this.handleError<Item[]>('getItems', [])));
     }
 
-  findByName(name: string): Observable<any> {
-    return this.http
-      .get(`${this.itemUrl}/${name}`);
+  addItem(item: Item):Observable<Item>{
+    return this.http.post<Item>(this.itemUrl, item);
+  }
+
+  getItem(id: string): Observable<Item>{
+    const url = `${this.itemUrl}/${id}`;
+    return this.http.get<Item>(url).pipe(
+      tap(_ => this.log(`fetched item id=${id}`)),
+      catchError(this.handleError<Item>(`getItem id=${id}`))
+    );
   }
 
   private handleError<T>(operation = 'operation', result?: T) {
