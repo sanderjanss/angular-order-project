@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {catchError, Observable, of, tap} from "rxjs";
 import {Item} from "../model/item";
 import {environment} from "../../environments/environment";
@@ -13,6 +13,9 @@ export class ItemService {
   private log(message: string) {
     this.messageService.add(`ItemService: ${message}`);
   }
+  httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  };
 
   constructor(private http: HttpClient, private messageService : MessageService) { }
 
@@ -36,6 +39,14 @@ export class ItemService {
     );
   }
 
+
+  updateItem(item: Item): Observable<any>{
+    return this.http.put(this.itemUrl, item, this.httpOptions).pipe(
+      tap(_ => this.log(`updated hero id=${item.id}`)),
+      catchError(this.handleError<any>('updateHero'))
+    );
+  }
+
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
 
@@ -49,5 +60,7 @@ export class ItemService {
       return of(result as T);
     };
   }
+
+
 
 }

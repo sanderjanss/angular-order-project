@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Item} from "../model/item";
 import {ItemService} from "../services/item.service";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {ItemFormValidator} from "../model/item-form-validator";
 
 @Component({
   selector: 'app-items',
@@ -10,33 +11,15 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 })
 export class ItemsComponent implements OnInit {
 
-  items!: Item[];
+  items: Item[] = [];
   searchText: string = '';
-  counter: number = 255;
-  status: boolean = true;
-  itemForm: FormGroup | any;
+
+  itemFormValidator : ItemFormValidator | any = new ItemFormValidator();
 
   constructor(private itemService: ItemService, private formBuilder: FormBuilder) {
   }
 
   ngOnInit(): void {
-    this.itemForm = new FormGroup({
-      'name': new FormControl(null, [
-        Validators.required
-      ]),
-      'description': new FormControl(null, [
-        Validators.required,
-        Validators.maxLength(255)
-      ]),
-      'price': new FormControl(null, [
-        Validators.required,
-        Validators.min(0)
-      ]),
-      'amountOfStock': new FormControl(null, [
-        Validators.required,
-        Validators.min(0)
-      ]),
-    });
     this.getItems();
   }
 
@@ -45,20 +28,11 @@ export class ItemsComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log(this.itemForm)
-    this.itemService.addItem(this.itemForm.value).subscribe(data => {
+    console.log(this.itemFormValidator.itemForm)
+    this.itemService.addItem(this.itemFormValidator.itemForm.value).subscribe(data => {
       console.log('message::::', data);
-      this.itemForm.reset();
+      this.itemFormValidator.itemForm.reset();
       this.getItems();
     });
-  }
-
-  descriptionCounter(event: any) {
-    if(event.target.value.length >255){
-      this.counter = 0;
-      this.status = false;
-      return
-    }
-    this.counter = 255 - event.target.value.length
   }
 }

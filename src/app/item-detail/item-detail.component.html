@@ -4,24 +4,46 @@
   <div><h2>Items</h2><span></span>{{item.id}}</div>
   <hr>
   <div>
-    <label for="item-name">Name: </label>
-    <input id="item-name" [(ngModel)]="item.name">
+    <label for="item-name2">Name: </label>
+    <input [disabled]="editableDisabled" id="item-name2" [(ngModel)]="item.name">
   </div>
   <div>
-    <label for="item-description">Description: </label>
-    <input id="item-description" [(ngModel)]="item.description">
+    <label for="item-description2">Description: </label>
+    <textarea [disabled]="editableDisabled" id="item-description2" cols="40" rows="10" [(ngModel)]="item.description"></textarea>
   </div>
   <div>
-    <label for="item-price">Price: </label>
-    <input id="item-price" [(ngModel)]="item.price">
+    <label for="item-price2">Price: </label>
+    <input [disabled]="editableDisabled" id="item-price2" [(ngModel)]="item.price">
   </div>
   <div>
-    <label for="item-amountOfStock">Amount of Stock: </label>
-    <input id="item-amountOfStock" [(ngModel)]="item.amountOfStock">
+    <label for="item-amountOfStock2">Amount of Stock: </label>
+    <input [disabled]="editableDisabled" id="item-amountOfStock2" [(ngModel)]="item.amountOfStock">
   </div>
-<!--  <button (click)="edit()">EDIT</button>-->
+  <button [hidden]="!editableDisabled" (click)="editToggle()">EDIT</button>
+  <button [hidden]="editableDisabled" (click)="save()">UPDATE</button>
   <button (click)="goBack()">BACK</button>
 
-
+<section>
+  <div class="form-group">
+    <h3>Add your item</h3>
+    <form  [formGroup]="itemFormValidator.itemForm">
+      <label for="item-name">Name: </label>
+      <input type="text" class="form-control" [formControlName]="'name'" [disabled]="editableDisabled" [(ngModel)]="item.name" id="item-name">
+      <span class="help-block" *ngIf="!itemFormValidator.itemForm.get('name').valid && itemFormValidator.itemForm.get('name').touched">Please enter a valid name</span>
+      <label for="item-description">Description: </label>
+      <textarea (input)="itemFormValidator.descriptionCounter($event)" [disabled]="editableDisabled" id="item-description" cols="40" rows="10" [(ngModel)]="item.description" class="form-control" [formControlName]="'description'"></textarea>
+      <span [ngClass]="itemFormValidator.status ? 'success':'danger'">{{itemFormValidator.counter}}/255</span>
+      <span class="help-block" *ngIf="!itemFormValidator.itemForm.get('description').valid && itemFormValidator.itemForm.get('description').touched">Please enter a valid description of maximum 255 characters</span>
+      <label for="item-price">Price: </label>
+      <input class="form-control" [formControlName]="'price'" type="number" [disabled]="editableDisabled" id="item-price" [(ngModel)]="item.price">
+      <span class="help-block" *ngIf="!itemFormValidator.itemForm.get('price').valid && itemFormValidator.itemForm.get('price').touched">Please enter a valid price, no negative numbers</span>
+      <label for="item-amountOfStock">Amount of Stock: </label>
+      <input class="form-control" [formControlName]="'amountOfStock'" [disabled]="editableDisabled" id="item-amountOfStock" [(ngModel)]="item.amountOfStock" type="number">
+      <span class="help-block" *ngIf="!itemFormValidator.itemForm.get('amountOfStock').valid && itemFormValidator.itemForm.get('amountOfStock').touched">Please enter a valid name, no negative numbers</span>
+<!--      <button class="btn btn-primary pull-right" [disabled]="itemFormValidator.itemForm.invalid" type="submit">Create Item</button>-->
+      <button (click)="editToggle()">{{editOrUpdate}}</button>
+      <button (click)="goBack()">BACK</button>
+    </form>
+  </div>
+</section>
 </div>
-<hr>
